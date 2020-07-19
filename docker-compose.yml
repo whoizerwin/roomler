@@ -7,7 +7,7 @@ services:
       - "6379:6379"
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-    
+
 
   mongo:
     image: mongo:latest
@@ -18,7 +18,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-    
+
 
   coturn:
     image: instrumentisto/coturn:latest
@@ -34,13 +34,13 @@ services:
         - --fingerprint
         - --no-multicast-peers
         - --cli-password=${TURN_PASSWORD}
-        - --no-tlsv1 
-        - --no-tlsv1_1 
-        - --fingerprint 
-        - --lt-cred-mech 
-        - --verbose 
-        - --user=${TURN_USERNAME}:${TURN_PASSWORD} 
-        - --realm=coturn.roomler.live 
+        - --no-tlsv1
+        - --no-tlsv1_1
+        - --fingerprint
+        - --lt-cred-mech
+        - --verbose
+        - --user=${TURN_USERNAME}:${TURN_PASSWORD}
+        - --realm=coturn.roomler.live
 #        - --listening-ip=$$(detect-external-ip)
         # - --relay-ip=$$(detect-external-ip)
         - --external-ip=$$(detect-external-ip)
@@ -89,9 +89,9 @@ services:
   nginx:
     image: gjovanov/nginx:latest
     ports:
-      - "${IP1}:80:80"
-      - "${IP1}:443:443/tcp"
-      - "${IP1}:443:443/udp"
+      - "${IP1}:800:800"
+      - "${IP1}:4433:4433/tcp"
+      - "${IP1}:4433:4433/udp"
     depends_on:
       - roomler
       - coturn
@@ -105,9 +105,9 @@ services:
     nginx2:
       image: gjovanov/nginx:latest
       ports:
-        - "${IP2}:80:80"
-        - "${IP2}:443:443/tcp"
-        - "${IP2}:443:443/udp"
+        - "${IP2}:800:800"
+        - "${IP2}:4433:4433/tcp"
+        - "${IP2}:4433:4433/udp"
       depends_on:
         - roomler
         - coturn
@@ -116,7 +116,7 @@ services:
         - ./.nginx/coturn/nginx.conf:/etc/nginx/nginx.conf
         - ./.nginx/cert/:/etc/nginx/cert/
         - ./.nginx/logs/:/etc/nginx/logs/
-     
+
 volumes:
   uploads:
   mongo_data:
